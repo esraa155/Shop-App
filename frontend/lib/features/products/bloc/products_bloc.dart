@@ -16,6 +16,14 @@ final class ProductFavoriteToggled extends ProductsEvent {
   List<Object?> get props => [productId];
 }
 
+final class ProductStockUpdated extends ProductsEvent {
+  final int productId;
+  final int newStock;
+  ProductStockUpdated(this.productId, this.newStock);
+  @override
+  List<Object?> get props => [productId, newStock];
+}
+
 sealed class ProductsState extends Equatable {
   @override
   List<Object?> get props => [];
@@ -64,6 +72,29 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
               ProductsLoaded(products: s.products, favorites: {..._favorites}));
         }
       } catch (_) {}
+    });
+    on<ProductStockUpdated>((event, emit) {
+      if (state is ProductsLoaded) {
+        final s = state as ProductsLoaded;
+        // Update product stock in the list
+        final updatedProducts = s.products.map((product) {
+          if (product.id == event.productId) {
+            return Product(
+              id: product.id,
+              name: product.name,
+              category: product.category,
+              description: product.description,
+              specifications: product.specifications,
+              price: product.price,
+              stock: event.newStock,
+              imageUrl: product.imageUrl,
+              isActive: product.isActive,
+            );
+          }
+          return product;
+        }).toList();
+        emit(ProductsLoaded(products: updatedProducts, favorites: {..._favorites}));
+      }
     });
   }
 }

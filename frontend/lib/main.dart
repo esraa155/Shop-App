@@ -29,16 +29,26 @@ class App extends StatelessWidget {
         RepositoryProvider(create: (_) => ProductRepository()),
         RepositoryProvider(create: (_) => CartRepository()),
       ],
-      child: MultiBlocProvider(
-        // Provide BLoCs for state management
-        providers: [
-          BlocProvider(create: (ctx) => AuthBloc(ctx.read<AuthRepository>())),
-          BlocProvider(
-              create: (ctx) => ProductsBloc(ctx.read<ProductRepository>())
-                ..add(ProductsRequested())), // Load products on app start
-          BlocProvider(create: (ctx) => CartBloc(ctx.read<CartRepository>())),
-        ],
-        child: const AppWithLocale(),
+      child: Builder(
+        builder: (context) {
+          // Create ProductsBloc first
+          final productsBloc = ProductsBloc(context.read<ProductRepository>())
+            ..add(ProductsRequested()); // Load products on app start
+          
+          // Create CartBloc and link it to ProductsBloc
+          final cartBloc = CartBloc(context.read<CartRepository>())
+            ..setProductsBloc(productsBloc);
+          
+          return MultiBlocProvider(
+            // Provide BLoCs for state management
+            providers: [
+              BlocProvider(create: (_) => AuthBloc(context.read<AuthRepository>())),
+              BlocProvider.value(value: productsBloc),
+              BlocProvider.value(value: cartBloc),
+            ],
+            child: const AppWithLocale(),
+          );
+        },
       ),
     );
   }
