@@ -15,20 +15,20 @@ class PaymentScreen extends StatefulWidget {
 class _PaymentScreenState extends State<PaymentScreen> {
   // Form key for validation
   final _formKey = GlobalKey<FormState>();
-  
+
   // Controller for card number input with automatic formatting
   final _cardNumberController = TextEditingController();
-  
+
   // Payment method: 'cod' for cash on delivery, 'card' for credit/debit card
   String _paymentMethod = 'cod';
-  
+
   // Shipping information fields
   String _fullName = '';
   String _phoneNumber = '';
   String _city = '';
   String _street = '';
   String _building = '';
-  
+
   // Card payment fields
   String _cardNumber = '';
   String? _expiryMonth;
@@ -51,7 +51,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
       body: BlocBuilder<CartBloc, CartState>(
         builder: (context, state) {
           final subtotal = state is CartLoaded ? state.subtotal : 0.0;
-          final isLoading = state is CartLoading;
+          final isLoading = false;
+
           return Form(
             key: _formKey,
             child: ListView(
@@ -202,15 +203,17 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     decoration: InputDecoration(
                                       labelText: 'Month',
                                       border: const OutlineInputBorder(),
-                                      contentPadding: const EdgeInsets.symmetric(
+                                      contentPadding:
+                                          const EdgeInsets.symmetric(
                                         horizontal: 12,
                                         vertical: 16,
                                       ),
                                     ),
                                     value: _expiryMonth,
                                     items: List.generate(12, (index) {
-                                      final month =
-                                          (index + 1).toString().padLeft(2, '0');
+                                      final month = (index + 1)
+                                          .toString()
+                                          .padLeft(2, '0');
                                       return DropdownMenuItem(
                                         value: month,
                                         child: Text(month),
@@ -237,7 +240,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     decoration: InputDecoration(
                                       labelText: 'Year',
                                       border: const OutlineInputBorder(),
-                                      contentPadding: const EdgeInsets.symmetric(
+                                      contentPadding:
+                                          const EdgeInsets.symmetric(
                                         horizontal: 12,
                                         vertical: 16,
                                       ),
@@ -247,18 +251,17 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                       final items =
                                           <DropdownMenuItem<String>>[];
                                       final currentYear = DateTime.now().year;
-                                      final currentMonth =
-                                          DateTime.now().month;
+                                      final currentMonth = DateTime.now().month;
 
                                       // Filter years based on selected month
                                       if (_expiryMonth != null) {
                                         final selectedMonth =
                                             int.parse(_expiryMonth!);
                                         // If selected month is in the past, start from next year
-                                        final startYear = (selectedMonth <
-                                                currentMonth)
-                                            ? currentYear + 1
-                                            : currentYear;
+                                        final startYear =
+                                            (selectedMonth < currentMonth)
+                                                ? currentYear + 1
+                                                : currentYear;
 
                                         for (int yearOffset = 0;
                                             yearOffset < 20;
@@ -276,10 +279,10 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                         for (int yearOffset = 0;
                                             yearOffset < 20;
                                             yearOffset++) {
-                                          final year = (currentYear +
-                                                  yearOffset)
-                                              .toString()
-                                              .substring(2);
+                                          final year =
+                                              (currentYear + yearOffset)
+                                                  .toString()
+                                                  .substring(2);
                                           items.add(DropdownMenuItem(
                                             value: year,
                                             child: Text(year),
@@ -414,16 +417,16 @@ class _PaymentScreenState extends State<PaymentScreen> {
                         : () async {
                             // Validate form before submission
                             if (!_formKey.currentState!.validate()) return;
-                            
+
                             // Process checkout through cart bloc
                             context.read<CartBloc>().add(CartCheckoutPressed());
-                            
+
                             if (!context.mounted) return;
-                            
+
                             // Show success message
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text(l10n.paymentSuccessful)));
-                            
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                content: Text(l10n.paymentSuccessful)));
+
                             // Navigate back to cart screen
                             Navigator.of(context).pop();
                           },
@@ -442,4 +445,3 @@ class _PaymentScreenState extends State<PaymentScreen> {
     );
   }
 }
-

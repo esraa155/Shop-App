@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../features/auth/data/auth_repository.dart';
@@ -13,7 +14,6 @@ import 'auth/login_register_screen.dart';
 import '../main.dart' show AppWithLocaleState;
 
 /// Main home screen displaying the list of products
-/// Features: Product list, favorites, cart, language selection, logout
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -22,20 +22,36 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  Timer? _reloadTimer;
+
   @override
   void initState() {
     super.initState();
-    // Load products and cart items when screen is opened
+
+    // تحميل أولي للمنتجات وCart
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
         context.read<ProductsBloc>().add(ProductsRequested());
         context.read<CartBloc>().add(CartRequested());
       }
     });
+
+    // reload صامت كل ثانية
+    _reloadTimer = Timer.periodic(const Duration(seconds: 1), (_) {
+      if (mounted) {
+        final productsBloc = context.read<ProductsBloc>();
+        productsBloc.add(ProductsRequested(silent: true));
+      }
+    });
   }
 
-  /// Shows a bottom sheet for language selection
-  /// Updates app locale and saves preference
+  @override
+  void dispose() {
+    _reloadTimer?.cancel();
+    super.dispose();
+  }
+
+  /// Bottom sheet لاختيار اللغة
   static void _showLanguagePicker(BuildContext context) {
     showModalBottomSheet(
       context: context,
@@ -45,11 +61,11 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             ListTile(
               leading: const Icon(Icons.language),
-              title: const Text('العربية'), // Arabic
+              title: const Text('العربية'),
               onTap: () async {
                 await LocaleStorage.write('ar');
-                // Get the AppWithLocale state to update locale
-                final appState = context.findAncestorStateOfType<AppWithLocaleState>();
+                final appState =
+                    context.findAncestorStateOfType<AppWithLocaleState>();
                 if (appState != null) {
                   appState.setLocale(const Locale('ar'));
                 }
@@ -62,8 +78,8 @@ class _HomeScreenState extends State<HomeScreen> {
               title: const Text('English'),
               onTap: () async {
                 await LocaleStorage.write('en');
-                // Get the AppWithLocale state to update locale
-                final appState = context.findAncestorStateOfType<AppWithLocaleState>();
+                final appState =
+                    context.findAncestorStateOfType<AppWithLocaleState>();
                 if (appState != null) {
                   appState.setLocale(const Locale('en'));
                 }
@@ -80,6 +96,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(l10n.products),
@@ -113,7 +130,6 @@ class _HomeScreenState extends State<HomeScreen> {
               icon: const Icon(Icons.logout),
               onPressed: () async {
                 await context.read<AuthRepository>().logout();
-                // reset blocs
                 context.read<ProductsBloc>().add(ProductsRequested());
                 if (!context.mounted) return;
                 Navigator.of(context).pushAndRemoveUntil(
@@ -128,13 +144,9 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: BlocBuilder<ProductsBloc, ProductsState>(
         builder: (context, state) {
-          // Optimize loading state: show previous data while loading new data
-          // This prevents flickering and improves UX during navigation
           if (state is ProductsLoading) {
-            // Check if we have previous loaded state to maintain continuity
             final previousState = context.read<ProductsBloc>().state;
             if (previousState is ProductsLoaded) {
-              // Display previous data while loading to prevent blank screen
               return ListView.builder(
                 itemCount: previousState.products.length,
                 itemBuilder: (ctx, i) {
@@ -149,13 +161,10 @@ class _HomeScreenState extends State<HomeScreen> {
             }
             return const SizedBox.shrink();
           } else if (state is ProductsLoaded) {
-            // Show empty state if no products available
             if (state.products.isEmpty) {
               return Center(child: Text(l10n.noProducts));
             }
-            
-            // Display products list with expandable tiles
-            // Products are already sorted alphabetically by backend
+
             return ListView.builder(
               itemCount: state.products.length,
               itemBuilder: (ctx, i) {
@@ -168,7 +177,6 @@ class _HomeScreenState extends State<HomeScreen> {
               },
             );
           } else {
-            // Error state: show error message
             return Center(child: Text(l10n.failedToLoad));
           }
         },
@@ -176,4 +184,3 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
-

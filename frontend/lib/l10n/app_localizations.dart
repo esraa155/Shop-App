@@ -17,84 +17,183 @@ class AppLocalizations {
   ];
 
   // Translations
-  String get appTitle => _localizedValues[locale.languageCode]?['appTitle'] ?? 'Shop App';
-  String get products => _localizedValues[locale.languageCode]?['products'] ?? 'Products';
+  String get appTitle =>
+      _localizedValues[locale.languageCode]?['appTitle'] ?? 'Shop App';
+  String get products =>
+      _localizedValues[locale.languageCode]?['products'] ?? 'Products';
   String get cart => _localizedValues[locale.languageCode]?['cart'] ?? 'Cart';
-  String get favorites => _localizedValues[locale.languageCode]?['favorites'] ?? 'Favorites';
-  String get login => _localizedValues[locale.languageCode]?['login'] ?? 'Login';
-  String get register => _localizedValues[locale.languageCode]?['register'] ?? 'Register';
+  String get favorites =>
+      _localizedValues[locale.languageCode]?['favorites'] ?? 'Favorites';
+  String get login =>
+      _localizedValues[locale.languageCode]?['login'] ?? 'Login';
+  String get register =>
+      _localizedValues[locale.languageCode]?['register'] ?? 'Register';
   String get name => _localizedValues[locale.languageCode]?['name'] ?? 'Name';
-  String get email => _localizedValues[locale.languageCode]?['email'] ?? 'Email';
-  String get password => _localizedValues[locale.languageCode]?['password'] ?? 'Password';
-  String get required => _localizedValues[locale.languageCode]?['required'] ?? 'Required';
-  String get minChars => _localizedValues[locale.languageCode]?['minChars'] ?? 'Min 6 chars';
-  String get pleaseWait => _localizedValues[locale.languageCode]?['pleaseWait'] ?? 'Please wait...';
-  String get createAccount => _localizedValues[locale.languageCode]?['createAccount'] ?? 'Create account';
-  String get haveAccount => _localizedValues[locale.languageCode]?['haveAccount'] ?? 'I have an account';
-  String get noProducts => _localizedValues[locale.languageCode]?['noProducts'] ?? 'No products';
-  String get failedToLoad => _localizedValues[locale.languageCode]?['failedToLoad'] ?? 'Failed to load products';
-  String get addedToCart => _localizedValues[locale.languageCode]?['addedToCart'] ?? 'Added to cart';
-  String get addedQtyToCart => _localizedValues[locale.languageCode]?['addedQtyToCart'] ?? 'Added {qty} to cart';
-  String addedQtyToCartWith(int qty) => addedQtyToCart.replaceAll('{qty}', qty.toString());
-  String get quantity => _localizedValues[locale.languageCode]?['quantity'] ?? 'Quantity';
-  String get cancel => _localizedValues[locale.languageCode]?['cancel'] ?? 'Cancel';
+  String get email =>
+      _localizedValues[locale.languageCode]?['email'] ?? 'Email';
+  String get password =>
+      _localizedValues[locale.languageCode]?['password'] ?? 'Password';
+  String get required =>
+      _localizedValues[locale.languageCode]?['required'] ?? 'Required';
+  String get minChars =>
+      _localizedValues[locale.languageCode]?['minChars'] ?? 'Min 6 chars';
+  String get pleaseWait =>
+      _localizedValues[locale.languageCode]?['pleaseWait'] ?? 'Please wait...';
+  String get createAccount =>
+      _localizedValues[locale.languageCode]?['createAccount'] ??
+      'Create account';
+  String get haveAccount =>
+      _localizedValues[locale.languageCode]?['haveAccount'] ??
+      'I have an account';
+  String get noProducts =>
+      _localizedValues[locale.languageCode]?['noProducts'] ?? 'No products';
+  String get failedToLoad =>
+      _localizedValues[locale.languageCode]?['failedToLoad'] ??
+      'Failed to load products';
+  String get addedToCart =>
+      _localizedValues[locale.languageCode]?['addedToCart'] ?? 'Added to cart';
+  String get addedQtyToCart =>
+      _localizedValues[locale.languageCode]?['addedQtyToCart'] ??
+      'Added {qty} to cart';
+  String addedQtyToCartWith(int qty) =>
+      addedQtyToCart.replaceAll('{qty}', qty.toString());
+  String get quantity =>
+      _localizedValues[locale.languageCode]?['quantity'] ?? 'Quantity';
+  String get cancel =>
+      _localizedValues[locale.languageCode]?['cancel'] ?? 'Cancel';
   String get add => _localizedValues[locale.languageCode]?['add'] ?? 'Add';
   String get qty => _localizedValues[locale.languageCode]?['qty'] ?? 'Qty';
-  String get subtotal => _localizedValues[locale.languageCode]?['subtotal'] ?? 'Subtotal';
-  String get checkout => _localizedValues[locale.languageCode]?['checkout'] ?? 'Checkout';
-  String get payment => _localizedValues[locale.languageCode]?['payment'] ?? 'Payment';
-  String get shippingAddress => _localizedValues[locale.languageCode]?['shippingAddress'] ?? 'Shipping Address';
-  String get paymentMethod => _localizedValues[locale.languageCode]?['paymentMethod'] ?? 'Payment Method';
-  String get cashOnDelivery => _localizedValues[locale.languageCode]?['cashOnDelivery'] ?? 'Cash on Delivery';
-  String get creditDebitCard => _localizedValues[locale.languageCode]?['creditDebitCard'] ?? 'Credit/Debit Card';
-  String get total => _localizedValues[locale.languageCode]?['total'] ?? 'Total';
-  String get payNow => _localizedValues[locale.languageCode]?['payNow'] ?? 'Pay now';
-  String get paymentSuccessful => _localizedValues[locale.languageCode]?['paymentSuccessful'] ?? 'Payment successful';
-  String get noFavoritesYet => _localizedValues[locale.languageCode]?['noFavoritesYet'] ?? 'No favorites yet';
-  String get failedToLoadCart => _localizedValues[locale.languageCode]?['failedToLoadCart'] ?? 'Failed to load cart';
-  String get addToCart => _localizedValues[locale.languageCode]?['addToCart'] ?? 'Add to cart';
-  String get price => _localizedValues[locale.languageCode]?['price'] ?? 'Price';
-  String get noDescription => _localizedValues[locale.languageCode]?['noDescription'] ?? 'No description';
-  String get logout => _localizedValues[locale.languageCode]?['logout'] ?? 'Logout';
-  String get arabic => _localizedValues[locale.languageCode]?['arabic'] ?? 'العربية';
-  String get english => _localizedValues[locale.languageCode]?['english'] ?? 'English';
-  String get fullName => _localizedValues[locale.languageCode]?['fullName'] ?? 'Full Name';
-  String get phoneNumber => _localizedValues[locale.languageCode]?['phoneNumber'] ?? 'Phone Number';
+  String get subtotal =>
+      _localizedValues[locale.languageCode]?['subtotal'] ?? 'Subtotal';
+  String get checkout =>
+      _localizedValues[locale.languageCode]?['checkout'] ?? 'Checkout';
+  String get payment =>
+      _localizedValues[locale.languageCode]?['payment'] ?? 'Payment';
+  String get shippingAddress =>
+      _localizedValues[locale.languageCode]?['shippingAddress'] ??
+      'Shipping Address';
+  String get paymentMethod =>
+      _localizedValues[locale.languageCode]?['paymentMethod'] ??
+      'Payment Method';
+  String get cashOnDelivery =>
+      _localizedValues[locale.languageCode]?['cashOnDelivery'] ??
+      'Cash on Delivery';
+  String get creditDebitCard =>
+      _localizedValues[locale.languageCode]?['creditDebitCard'] ??
+      'Credit/Debit Card';
+  String get total =>
+      _localizedValues[locale.languageCode]?['total'] ?? 'Total';
+  String get payNow =>
+      _localizedValues[locale.languageCode]?['payNow'] ?? 'Pay now';
+  String get paymentSuccessful =>
+      _localizedValues[locale.languageCode]?['paymentSuccessful'] ??
+      'Payment successful';
+  String get noFavoritesYet =>
+      _localizedValues[locale.languageCode]?['noFavoritesYet'] ??
+      'No favorites yet';
+  String get failedToLoadCart =>
+      _localizedValues[locale.languageCode]?['failedToLoadCart'] ??
+      'Failed to load cart';
+  String get addToCart =>
+      _localizedValues[locale.languageCode]?['addToCart'] ?? 'Add to cart';
+  String get price =>
+      _localizedValues[locale.languageCode]?['price'] ?? 'Price';
+  String get noDescription =>
+      _localizedValues[locale.languageCode]?['noDescription'] ??
+      'No description';
+  String get logout =>
+      _localizedValues[locale.languageCode]?['logout'] ?? 'Logout';
+  String get arabic =>
+      _localizedValues[locale.languageCode]?['arabic'] ?? 'العربية';
+  String get english =>
+      _localizedValues[locale.languageCode]?['english'] ?? 'English';
+  String get fullName =>
+      _localizedValues[locale.languageCode]?['fullName'] ?? 'Full Name';
+  String get phoneNumber =>
+      _localizedValues[locale.languageCode]?['phoneNumber'] ?? 'Phone Number';
   String get city => _localizedValues[locale.languageCode]?['city'] ?? 'City';
-  String get street => _localizedValues[locale.languageCode]?['street'] ?? 'Street';
-  String get building => _localizedValues[locale.languageCode]?['building'] ?? 'Building';
-  String get cardNumber => _localizedValues[locale.languageCode]?['cardNumber'] ?? 'Card Number';
-  String get expiryDate => _localizedValues[locale.languageCode]?['expiryDate'] ?? 'Expiry Date';
+  String get street =>
+      _localizedValues[locale.languageCode]?['street'] ?? 'Street';
+  String get building =>
+      _localizedValues[locale.languageCode]?['building'] ?? 'Building';
+  String get cardNumber =>
+      _localizedValues[locale.languageCode]?['cardNumber'] ?? 'Card Number';
+  String get expiryDate =>
+      _localizedValues[locale.languageCode]?['expiryDate'] ?? 'Expiry Date';
   String get cvv => _localizedValues[locale.languageCode]?['cvv'] ?? 'CVV';
-  String get cardHolderName => _localizedValues[locale.languageCode]?['cardHolderName'] ?? 'Card Holder Name';
-  String get invalidEmail => _localizedValues[locale.languageCode]?['invalidEmail'] ?? 'Invalid email';
-  String get invalidPhone => _localizedValues[locale.languageCode]?['invalidPhone'] ?? 'Invalid phone number';
-  String get selectLanguage => _localizedValues[locale.languageCode]?['selectLanguage'] ?? 'Select Language';
-  String get viewFavorites => _localizedValues[locale.languageCode]?['viewFavorites'] ?? 'View Favorites';
-  String get viewCart => _localizedValues[locale.languageCode]?['viewCart'] ?? 'View Cart';
-  String get addToFavorites => _localizedValues[locale.languageCode]?['addToFavorites'] ?? 'Add to Favorites';
-  String get removeFromFavorites => _localizedValues[locale.languageCode]?['removeFromFavorites'] ?? 'Remove from Favorites';
-  String get showDetails => _localizedValues[locale.languageCode]?['showDetails'] ?? 'Show Details';
-  String get hideDetails => _localizedValues[locale.languageCode]?['hideDetails'] ?? 'Hide Details';
-  String get category => _localizedValues[locale.languageCode]?['category'] ?? 'Category';
-  String get description => _localizedValues[locale.languageCode]?['description'] ?? 'Description';
-  String get specifications => _localizedValues[locale.languageCode]?['specifications'] ?? 'Specifications';
-  String get stock => _localizedValues[locale.languageCode]?['stock'] ?? 'Stock';
-  String get outOfStock => _localizedValues[locale.languageCode]?['outOfStock'] ?? 'Out of Stock';
-  String get cannotPurchaseOutOfStock => _localizedValues[locale.languageCode]?['cannotPurchaseOutOfStock'] ?? 'Cannot purchase this product because it is out of stock';
-  String get profile => _localizedValues[locale.languageCode]?['profile'] ?? 'Profile';
-  String get phone => _localizedValues[locale.languageCode]?['phone'] ?? 'Phone';
-  String get address => _localizedValues[locale.languageCode]?['address'] ?? 'Address';
-  String get dateOfBirth => _localizedValues[locale.languageCode]?['dateOfBirth'] ?? 'Date of Birth';
-  String get country => _localizedValues[locale.languageCode]?['country'] ?? 'Country';
-  String get currentPassword => _localizedValues[locale.languageCode]?['currentPassword'] ?? 'Current Password';
-  String get newPassword => _localizedValues[locale.languageCode]?['newPassword'] ?? 'New Password';
-  String get confirmPassword => _localizedValues[locale.languageCode]?['confirmPassword'] ?? 'Confirm Password';
-  String get changePassword => _localizedValues[locale.languageCode]?['changePassword'] ?? 'Change Password';
-  String get passwordChanged => _localizedValues[locale.languageCode]?['passwordChanged'] ?? 'Password changed successfully';
-  String get passwordMismatch => _localizedValues[locale.languageCode]?['passwordMismatch'] ?? 'Passwords do not match';
-  String get passwordTooShort => _localizedValues[locale.languageCode]?['passwordTooShort'] ?? 'Password must be at least 8 characters';
-  String get profileUpdated => _localizedValues[locale.languageCode]?['profileUpdated'] ?? 'Profile updated successfully';
+  String get cardHolderName =>
+      _localizedValues[locale.languageCode]?['cardHolderName'] ??
+      'Card Holder Name';
+  String get invalidEmail =>
+      _localizedValues[locale.languageCode]?['invalidEmail'] ?? 'Invalid email';
+  String get invalidPhone =>
+      _localizedValues[locale.languageCode]?['invalidPhone'] ??
+      'Invalid phone number';
+  String get selectLanguage =>
+      _localizedValues[locale.languageCode]?['selectLanguage'] ??
+      'Select Language';
+  String get viewFavorites =>
+      _localizedValues[locale.languageCode]?['viewFavorites'] ??
+      'View Favorites';
+  String get viewCart =>
+      _localizedValues[locale.languageCode]?['viewCart'] ?? 'View Cart';
+  String get addToFavorites =>
+      _localizedValues[locale.languageCode]?['addToFavorites'] ??
+      'Add to Favorites';
+  String get removeFromFavorites =>
+      _localizedValues[locale.languageCode]?['removeFromFavorites'] ??
+      'Remove from Favorites';
+  String get showDetails =>
+      _localizedValues[locale.languageCode]?['showDetails'] ?? 'Show Details';
+  String get hideDetails =>
+      _localizedValues[locale.languageCode]?['hideDetails'] ?? 'Hide Details';
+  String get category =>
+      _localizedValues[locale.languageCode]?['category'] ?? 'Category';
+  String get description =>
+      _localizedValues[locale.languageCode]?['description'] ?? 'Description';
+  String get specifications =>
+      _localizedValues[locale.languageCode]?['specifications'] ??
+      'Specifications';
+  String get stock =>
+      _localizedValues[locale.languageCode]?['stock'] ?? 'Stock';
+  String get outOfStock =>
+      _localizedValues[locale.languageCode]?['outOfStock'] ?? 'Out of Stock';
+  String get cannotPurchaseOutOfStock =>
+      _localizedValues[locale.languageCode]?['cannotPurchaseOutOfStock'] ??
+      'Cannot purchase this product because it is out of stock';
+  String get profile =>
+      _localizedValues[locale.languageCode]?['profile'] ?? 'Profile';
+  String get phone =>
+      _localizedValues[locale.languageCode]?['phone'] ?? 'Phone';
+  String get address =>
+      _localizedValues[locale.languageCode]?['address'] ?? 'Address';
+  String get dateOfBirth =>
+      _localizedValues[locale.languageCode]?['dateOfBirth'] ?? 'Date of Birth';
+  String get country =>
+      _localizedValues[locale.languageCode]?['country'] ?? 'Country';
+  String get currentPassword =>
+      _localizedValues[locale.languageCode]?['currentPassword'] ??
+      'Current Password';
+  String get newPassword =>
+      _localizedValues[locale.languageCode]?['newPassword'] ?? 'New Password';
+  String get confirmPassword =>
+      _localizedValues[locale.languageCode]?['confirmPassword'] ??
+      'Confirm Password';
+  String get changePassword =>
+      _localizedValues[locale.languageCode]?['changePassword'] ??
+      'Change Password';
+  String get passwordChanged =>
+      _localizedValues[locale.languageCode]?['passwordChanged'] ??
+      'Password changed successfully';
+  String get passwordMismatch =>
+      _localizedValues[locale.languageCode]?['passwordMismatch'] ??
+      'Passwords do not match';
+  String get passwordTooShort =>
+      _localizedValues[locale.languageCode]?['passwordTooShort'] ??
+      'Password must be at least 8 characters';
+  String get profileUpdated =>
+      _localizedValues[locale.languageCode]?['profileUpdated'] ??
+      'Profile updated successfully';
 
   static final Map<String, Map<String, String>> _localizedValues = {
     'en': {
@@ -161,7 +260,8 @@ class AppLocalizations {
       'specifications': 'Specifications',
       'stock': 'Stock',
       'outOfStock': 'Out of Stock',
-      'cannotPurchaseOutOfStock': 'Cannot purchase this product because it is out of stock',
+      'cannotPurchaseOutOfStock':
+          'Cannot purchase this product because it is out of stock',
       'profile': 'Profile',
       'phone': 'Phone',
       'address': 'Address',
@@ -175,6 +275,7 @@ class AppLocalizations {
       'passwordMismatch': 'Passwords do not match',
       'passwordTooShort': 'Password must be at least 8 characters',
       'profileUpdated': 'Profile updated successfully',
+      "itemAddedToCart": "Item added to cart!"
     },
     'ar': {
       'appTitle': 'تطبيق المتجر',
@@ -254,11 +355,13 @@ class AppLocalizations {
       'passwordMismatch': 'كلمات المرور غير متطابقة',
       'passwordTooShort': 'يجب أن تكون كلمة المرور 8 أحرف على الأقل',
       'profileUpdated': 'تم تحديث الملف الشخصي بنجاح',
+      "itemAddedToCart": "تمت إضافة المنتج إلى السلة!"
     },
   };
 }
 
-class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
+class _AppLocalizationsDelegate
+    extends LocalizationsDelegate<AppLocalizations> {
   const _AppLocalizationsDelegate();
 
   @override
@@ -274,4 +377,3 @@ class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> 
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;
 }
-

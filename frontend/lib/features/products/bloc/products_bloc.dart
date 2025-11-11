@@ -1,13 +1,22 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import '../data/product_repository.dart';
+import 'package:flutter/foundation.dart'; // listEquals
 
+// Events
 sealed class ProductsEvent extends Equatable {
   @override
   List<Object?> get props => [];
 }
 
-final class ProductsRequested extends ProductsEvent {}
+/// أضفنا `silent` ليكون reload صامت
+final class ProductsRequested extends ProductsEvent {
+  final bool silent;
+  ProductsRequested({this.silent = false});
+
+  @override
+  List<Object?> get props => [silent];
+}
 
 final class ProductFavoriteToggled extends ProductsEvent {
   final int productId;
@@ -24,6 +33,7 @@ final class ProductStockUpdated extends ProductsEvent {
   List<Object?> get props => [productId, newStock];
 }
 
+// States
 sealed class ProductsState extends Equatable {
   @override
   List<Object?> get props => [];
@@ -41,23 +51,37 @@ final class ProductsLoaded extends ProductsState {
 
 final class ProductsError extends ProductsState {}
 
+// Bloc
 class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
   final ProductRepository _repo;
   final Set<int> _favorites = {};
+
   ProductsBloc(this._repo) : super(ProductsLoading()) {
+    // Reload products
     on<ProductsRequested>((event, emit) async {
-      emit(ProductsLoading());
+      if (!event.silent) emit(ProductsLoading());
+
       try {
         final items = await _repo.list();
         final favs = await _repo.listFavoritesIds();
         _favorites
           ..clear()
           ..addAll(favs);
+
+        if (event.silent && state is ProductsLoaded) {
+          final currentProducts = (state as ProductsLoaded).products;
+          if (listEquals(currentProducts, items)) {
+            return; // البيانات لم تتغير، لا نرسل state جديد
+          }
+        }
+
         emit(ProductsLoaded(products: items, favorites: {..._favorites}));
       } catch (e) {
         emit(ProductsError());
       }
     });
+
+    // Toggle favorite
     on<ProductFavoriteToggled>((event, emit) async {
       try {
         final favorited = await _repo.toggleFavorite(event.productId);
@@ -73,10 +97,11 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
         }
       } catch (_) {}
     });
+
+    // Update stock
     on<ProductStockUpdated>((event, emit) {
       if (state is ProductsLoaded) {
         final s = state as ProductsLoaded;
-        // Update product stock in the list
         final updatedProducts = s.products.map((product) {
           if (product.id == event.productId) {
             return Product(
@@ -93,7 +118,8 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
           }
           return product;
         }).toList();
-        emit(ProductsLoaded(products: updatedProducts, favorites: {..._favorites}));
+        emit(ProductsLoaded(
+            products: updatedProducts, favorites: {..._favorites}));
       }
     });
   }

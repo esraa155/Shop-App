@@ -60,124 +60,126 @@ final class CartError extends CartState {
 class CartBloc extends Bloc<CartEvent, CartState> {
   final CartRepository _repo;
   ProductsBloc? _productsBloc;
-  
+
   void setProductsBloc(ProductsBloc bloc) {
     _productsBloc = bloc;
   }
-  
+
   CartBloc(this._repo) : super(CartLoading()) {
     on<CartRequested>((event, emit) async {
       await _refresh(emit);
     });
+
     on<CartAddPressed>((event, emit) async {
       try {
-        final cartItem = await _repo.addToCart(productId: event.productId, quantity: event.qty);
-        // Update product stock in ProductsBloc if available
+        final cartItem = await _repo.addToCart(
+          productId: event.productId,
+          quantity: event.qty,
+        );
+
         if (_productsBloc != null && cartItem.product != null) {
-          _productsBloc!.add(ProductStockUpdated(event.productId, cartItem.product!.stock));
+          _productsBloc!.add(
+            ProductStockUpdated(event.productId, cartItem.product!.stock),
+          );
         }
-        await _refresh(emit);
+
+        await _refresh(emit, silent: true);
       } catch (e) {
         emit(CartError('Failed to add to cart'));
       }
     });
+
     on<CartRemovePressed>((event, emit) async {
       try {
-        // Get cart item before removing to know which product to update
         final currentState = state;
         int? productId;
         int? quantity;
+
         if (currentState is CartLoaded && currentState.items.isNotEmpty) {
           try {
-            final item = currentState.items.firstWhere(
-              (item) => item.id == event.cartItemId,
-            );
+            final item = currentState.items
+                .firstWhere((item) => item.id == event.cartItemId);
             productId = item.product?.id;
             quantity = item.quantity;
-          } catch (_) {
-            // Item not found, continue with removal
-          }
+          } catch (_) {}
         }
-        
+
         await _repo.removeFromCart(cartItemId: event.cartItemId);
-        
-        // Update product stock in ProductsBloc if available
+
         if (_productsBloc != null && productId != null && quantity != null) {
-          // Get current product stock and add back the quantity
           final productsState = _productsBloc!.state;
           if (productsState is ProductsLoaded) {
             try {
-              final product = productsState.products.firstWhere(
-                (p) => p.id == productId,
-              );
+              final product =
+                  productsState.products.firstWhere((p) => p.id == productId);
               final newStock = product.stock + quantity;
               _productsBloc!.add(ProductStockUpdated(productId, newStock));
-            } catch (_) {
-              // Product not found, skip stock update
-            }
+            } catch (_) {}
           }
         }
-        
-        await _refresh(emit);
+
+        await _refresh(emit, silent: true);
       } catch (e) {
         emit(CartError('Failed to remove item'));
       }
     });
-    on<CartCheckoutPressed>((event, emit) async {
-      try {
-        await _repo.checkout();
-        await _refresh(emit);
-      } catch (e) {
-        emit(CartError('Checkout failed'));
-      }
-    });
+
     on<CartUpdateQuantityPressed>((event, emit) async {
       try {
-        // Get cart item before updating to know which product and old quantity
         final currentState = state;
         int? productId;
         int? oldQuantity;
+
         if (currentState is CartLoaded && currentState.items.isNotEmpty) {
           try {
-            final item = currentState.items.firstWhere(
-              (item) => item.id == event.cartItemId,
-            );
+            final item = currentState.items
+                .firstWhere((item) => item.id == event.cartItemId);
             productId = item.product?.id;
             oldQuantity = item.quantity;
-          } catch (_) {
-            // Item not found, continue with update
-          }
+          } catch (_) {}
         }
-        
+
         await _repo.updateQuantity(
-            cartItemId: event.cartItemId, quantity: event.quantity);
-        
-        // Update product stock in ProductsBloc if available
+          cartItemId: event.cartItemId,
+          quantity: event.quantity,
+        );
+
         if (_productsBloc != null && productId != null && oldQuantity != null) {
           final quantityDifference = event.quantity - oldQuantity;
           final productsState = _productsBloc!.state;
           if (productsState is ProductsLoaded) {
             try {
-              final product = productsState.products.firstWhere(
-                (p) => p.id == productId,
-              );
+              final product =
+                  productsState.products.firstWhere((p) => p.id == productId);
               final newStock = product.stock - quantityDifference;
               _productsBloc!.add(ProductStockUpdated(productId, newStock));
-            } catch (_) {
-              // Product not found, skip stock update
-            }
+            } catch (_) {}
           }
         }
-        
-        await _refresh(emit);
+
+        await _refresh(emit, silent: true);
       } catch (e) {
         emit(CartError('Failed to update quantity'));
       }
     });
+
+    on<CartCheckoutPressed>((event, emit) async {
+      try {
+        await _repo.checkout();
+        await _refresh(emit, silent: true);
+      } catch (e) {
+        emit(CartError('Checkout failed'));
+      }
+    });
   }
 
-  Future<void> _refresh(Emitter<CartState> emit) async {
-    emit(CartLoading());
+  Future<void> _refresh(Emitter<CartState> emit, {bool silent = false}) async {
+    final currentState = state;
+
+    if (!silent || currentState is! CartLoaded) {
+      emit(CartLoading());
+    }
+
     try {
       final (items, subtotal) = await _repo.getCart();
       emit(CartLoaded(items: items, subtotal: subtotal));
