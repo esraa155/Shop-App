@@ -1,0 +1,129 @@
+openapi: 3.0.3
+info:
+  title: Shop App API
+  version: 1.0.0
+servers:
+  - url: http://localhost:8000
+paths:
+  /api/register:
+    post:
+      tags: [Auth]
+      summary: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name, email, password, password_confirmation]
+              properties:
+                name: { type: string, maxLength: 100 }
+                email: { type: string, format: email }
+                password: { type: string, minLength: 8 }
+                password_confirmation: { type: string, minLength: 8 }
+      responses:
+        '201':
+          description: Registered
+  /api/login:
+    post:
+      tags: [Auth]
+      summary: Login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email: { type: string, format: email }
+                password: { type: string }
+      responses:
+        '200':
+          description: Logged in
+  /api/logout:
+    post:
+      tags: [Auth]
+      security: [{ sanctum: [] }]
+      summary: Logout and revoke token
+      responses:
+        '204': { description: Logged out }
+  /api/products:
+    get:
+      tags: [Products]
+      summary: List products
+      parameters:
+        - in: query
+          name: page
+          schema: { type: integer, minimum: 1 }
+        - in: query
+          name: per_page
+          schema: { type: integer, minimum: 1, maximum: 100, default: 10 }
+      responses:
+        '200':
+          description: Products page
+  /api/cart:
+    get:
+      tags: [Cart]
+      security: [{ sanctum: [] }]
+      summary: Get current user's cart
+      responses:
+        '200':
+          description: Cart items
+  /api/cart/add:
+    post:
+      tags: [Cart]
+      security: [{ sanctum: [] }]
+      summary: Add product to cart
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [product_id, quantity]
+              properties:
+                product_id: { type: integer }
+                quantity: { type: integer, minimum: 1 }
+      responses:
+        '200':
+          description: Added or updated
+  /api/cart/remove/{id}:
+    delete:
+      tags: [Cart]
+      security: [{ sanctum: [] }]
+      summary: Remove cart item
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        '204': { description: Removed }
+  /api/checkout:
+    post:
+      tags: [Orders]
+      security: [{ sanctum: [] }]
+      summary: Checkout current cart
+      responses:
+        '201':
+          description: Order created
+  /api/orders:
+    get:
+      tags: [Orders]
+      security: [{ sanctum: [] }]
+      summary: List previous orders
+      parameters:
+        - in: query
+          name: page
+          schema: { type: integer, minimum: 1 }
+      responses:
+        '200':
+          description: Orders page
+components:
+  securitySchemes:
+    sanctum:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
