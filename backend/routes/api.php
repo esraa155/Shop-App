@@ -23,6 +23,7 @@ Route::middleware('auth:sanctum')->group(function () {
 	// Profile routes
 	Route::get('/profile', [ProfileController::class, 'show']);
 	Route::put('/profile', [ProfileController::class, 'update']);
+	Route::post('/profile/change-password', [ProfileController::class, 'changePassword']);
 
 	Route::get('/cart', [CartController::class, 'index']);
 	Route::post('/cart/add', [CartController::class, 'add']);

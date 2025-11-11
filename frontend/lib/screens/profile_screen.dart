@@ -18,6 +18,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
+  final _phoneController = TextEditingController();
+  final _addressController = TextEditingController();
+  final _cityController = TextEditingController();
+  final _countryController = TextEditingController();
+  final _currentPasswordController = TextEditingController();
+  final _newPasswordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
   final ProfileRepository _profileRepo = ProfileRepository();
   
   bool _isLoading = true;
@@ -25,6 +32,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
   UserProfile? _profile;
   File? _selectedImage;
   String? _avatarUrl;
+  String? _dateOfBirth;
+  bool _showPasswordChange = false;
+  bool _showCurrentPassword = false;
+  bool _showNewPassword = false;
+  bool _showConfirmPassword = false;
 
   @override
   void initState() {
@@ -36,6 +48,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void dispose() {
     _nameController.dispose();
     _emailController.dispose();
+    _phoneController.dispose();
+    _addressController.dispose();
+    _cityController.dispose();
+    _countryController.dispose();
+    _currentPasswordController.dispose();
+    _newPasswordController.dispose();
+    _confirmPasswordController.dispose();
     super.dispose();
   }
 
@@ -47,6 +66,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
         _profile = profile;
         _nameController.text = profile.name;
         _emailController.text = profile.email;
+        _phoneController.text = profile.phone ?? '';
+        _addressController.text = profile.address ?? '';
+        _cityController.text = profile.city ?? '';
+        _countryController.text = profile.country ?? '';
+        _dateOfBirth = profile.dateOfBirth;
         _avatarUrl = profile.avatar;
         _isLoading = false;
       });
@@ -159,6 +183,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
         name: _nameController.text.trim(),
         email: _emailController.text.trim(),
         avatar: avatarBase64,
+        phone: _phoneController.text.trim(),
+        address: _addressController.text.trim(),
+        dateOfBirth: _dateOfBirth,
+        city: _cityController.text.trim(),
+        country: _countryController.text.trim(),
       );
 
       setState(() {
@@ -170,7 +199,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Profile updated successfully')),
+          SnackBar(content: Text(l10n.profileUpdated)),
         );
       }
     } catch (e) {
@@ -178,6 +207,54 @@ class _ProfileScreenState extends State<ProfileScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Failed to update profile: $e')),
+        );
+      }
+    }
+  }
+
+  /// Change user password
+  Future<void> _changePassword() async {
+    if (_newPasswordController.text != _confirmPasswordController.text) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(l10n.passwordMismatch)),
+      );
+      return;
+    }
+
+    if (_newPasswordController.text.length < 8) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(l10n.passwordTooShort)),
+      );
+      return;
+    }
+
+    setState(() => _isSaving = true);
+
+    try {
+      await _profileRepo.changePassword(
+        currentPassword: _currentPasswordController.text,
+        newPassword: _newPasswordController.text,
+        confirmPassword: _confirmPasswordController.text,
+      );
+
+      setState(() {
+        _isSaving = false;
+        _showPasswordChange = false;
+        _currentPasswordController.clear();
+        _newPasswordController.clear();
+        _confirmPasswordController.clear();
+      });
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(l10n.passwordChanged)),
+        );
+      }
+    } catch (e) {
+      setState(() => _isSaving = false);
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to change password: $e')),
         );
       }
     }
@@ -322,6 +399,174 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 return null;
               },
             ),
+            const SizedBox(height: 16),
+            TextFormField(
+              controller: _phoneController,
+              decoration: InputDecoration(
+                labelText: l10n.phone,
+                border: const OutlineInputBorder(),
+                prefixIcon: const Icon(Icons.phone),
+              ),
+              keyboardType: TextInputType.phone,
+            ),
+            const SizedBox(height: 16),
+            TextFormField(
+              controller: _addressController,
+              decoration: InputDecoration(
+                labelText: l10n.address,
+                border: const OutlineInputBorder(),
+                prefixIcon: const Icon(Icons.home),
+              ),
+              maxLines: 2,
+            ),
+            const SizedBox(height: 16),
+            TextFormField(
+              decoration: InputDecoration(
+                labelText: l10n.dateOfBirth,
+                border: const OutlineInputBorder(),
+                prefixIcon: const Icon(Icons.calendar_today),
+              ),
+              readOnly: true,
+              onTap: () async {
+                final date = await showDatePicker(
+                  context: context,
+                  initialDate: _dateOfBirth != null
+                      ? DateTime.parse(_dateOfBirth!)
+                      : DateTime.now().subtract(const Duration(days: 365 * 18)),
+                  firstDate: DateTime(1900),
+                  lastDate: DateTime.now(),
+                );
+                if (date != null) {
+                  setState(() {
+                    _dateOfBirth = date.toIso8601String().split('T')[0];
+                  });
+                }
+              },
+              controller: TextEditingController(
+                text: _dateOfBirth != null
+                    ? DateTime.parse(_dateOfBirth!).toString().split(' ')[0]
+                    : '',
+              ),
+            ),
+            const SizedBox(height: 16),
+            TextFormField(
+              controller: _cityController,
+              decoration: InputDecoration(
+                labelText: l10n.city,
+                border: const OutlineInputBorder(),
+                prefixIcon: const Icon(Icons.location_city),
+              ),
+            ),
+            const SizedBox(height: 16),
+            TextFormField(
+              controller: _countryController,
+              decoration: InputDecoration(
+                labelText: l10n.country,
+                border: const OutlineInputBorder(),
+                prefixIcon: const Icon(Icons.public),
+              ),
+            ),
+            const SizedBox(height: 24),
+            // ========== Password Change Section ==========
+            Text(
+              l10n.changePassword,
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            const SizedBox(height: 8),
+            if (!_showPasswordChange)
+              OutlinedButton.icon(
+                onPressed: () => setState(() => _showPasswordChange = true),
+                icon: const Icon(Icons.lock),
+                label: Text(l10n.changePassword),
+              )
+            else ...[
+              TextFormField(
+                controller: _currentPasswordController,
+                decoration: InputDecoration(
+                  labelText: l10n.currentPassword,
+                  border: const OutlineInputBorder(),
+                  prefixIcon: const Icon(Icons.lock_outline),
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      _showCurrentPassword ? Icons.visibility : Icons.visibility_off,
+                    ),
+                    onPressed: () => setState(() => _showCurrentPassword = !_showCurrentPassword),
+                  ),
+                ),
+                obscureText: !_showCurrentPassword,
+                validator: (v) => (v == null || v.isEmpty) ? l10n.required : null,
+              ),
+              const SizedBox(height: 16),
+              TextFormField(
+                controller: _newPasswordController,
+                decoration: InputDecoration(
+                  labelText: l10n.newPassword,
+                  border: const OutlineInputBorder(),
+                  prefixIcon: const Icon(Icons.lock),
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      _showNewPassword ? Icons.visibility : Icons.visibility_off,
+                    ),
+                    onPressed: () => setState(() => _showNewPassword = !_showNewPassword),
+                  ),
+                ),
+                obscureText: !_showNewPassword,
+                validator: (v) {
+                  if (v == null || v.isEmpty) return l10n.required;
+                  if (v.length < 8) return l10n.passwordTooShort;
+                  return null;
+                },
+              ),
+              const SizedBox(height: 16),
+              TextFormField(
+                controller: _confirmPasswordController,
+                decoration: InputDecoration(
+                  labelText: l10n.confirmPassword,
+                  border: const OutlineInputBorder(),
+                  prefixIcon: const Icon(Icons.lock),
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      _showConfirmPassword ? Icons.visibility : Icons.visibility_off,
+                    ),
+                    onPressed: () => setState(() => _showConfirmPassword = !_showConfirmPassword),
+                  ),
+                ),
+                obscureText: !_showConfirmPassword,
+                validator: (v) {
+                  if (v == null || v.isEmpty) return l10n.required;
+                  if (v != _newPasswordController.text) return l10n.passwordMismatch;
+                  return null;
+                },
+              ),
+              const SizedBox(height: 16),
+              Row(
+                children: [
+                  Expanded(
+                    child: OutlinedButton(
+                      onPressed: () {
+                        setState(() {
+                          _showPasswordChange = false;
+                          _currentPasswordController.clear();
+                          _newPasswordController.clear();
+                          _confirmPasswordController.clear();
+                        });
+                      },
+                      child: Text(l10n.cancel),
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: FilledButton(
+                      onPressed: _isSaving ? null : _changePassword,
+                      child: Text(l10n.changePassword),
+                    ),
+                  ),
+                ],
+              ),
+            ],
             const SizedBox(height: 24),
             // ========== Account Information Section ==========
             if (_profile != null) ...[

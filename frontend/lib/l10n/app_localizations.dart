@@ -83,6 +83,18 @@ class AppLocalizations {
   String get outOfStock => _localizedValues[locale.languageCode]?['outOfStock'] ?? 'Out of Stock';
   String get cannotPurchaseOutOfStock => _localizedValues[locale.languageCode]?['cannotPurchaseOutOfStock'] ?? 'Cannot purchase this product because it is out of stock';
   String get profile => _localizedValues[locale.languageCode]?['profile'] ?? 'Profile';
+  String get phone => _localizedValues[locale.languageCode]?['phone'] ?? 'Phone';
+  String get address => _localizedValues[locale.languageCode]?['address'] ?? 'Address';
+  String get dateOfBirth => _localizedValues[locale.languageCode]?['dateOfBirth'] ?? 'Date of Birth';
+  String get country => _localizedValues[locale.languageCode]?['country'] ?? 'Country';
+  String get currentPassword => _localizedValues[locale.languageCode]?['currentPassword'] ?? 'Current Password';
+  String get newPassword => _localizedValues[locale.languageCode]?['newPassword'] ?? 'New Password';
+  String get confirmPassword => _localizedValues[locale.languageCode]?['confirmPassword'] ?? 'Confirm Password';
+  String get changePassword => _localizedValues[locale.languageCode]?['changePassword'] ?? 'Change Password';
+  String get passwordChanged => _localizedValues[locale.languageCode]?['passwordChanged'] ?? 'Password changed successfully';
+  String get passwordMismatch => _localizedValues[locale.languageCode]?['passwordMismatch'] ?? 'Passwords do not match';
+  String get passwordTooShort => _localizedValues[locale.languageCode]?['passwordTooShort'] ?? 'Password must be at least 8 characters';
+  String get profileUpdated => _localizedValues[locale.languageCode]?['profileUpdated'] ?? 'Profile updated successfully';
 
   static final Map<String, Map<String, String>> _localizedValues = {
     'en': {
@@ -151,6 +163,18 @@ class AppLocalizations {
       'outOfStock': 'Out of Stock',
       'cannotPurchaseOutOfStock': 'Cannot purchase this product because it is out of stock',
       'profile': 'Profile',
+      'phone': 'Phone',
+      'address': 'Address',
+      'dateOfBirth': 'Date of Birth',
+      'country': 'Country',
+      'currentPassword': 'Current Password',
+      'newPassword': 'New Password',
+      'confirmPassword': 'Confirm Password',
+      'changePassword': 'Change Password',
+      'passwordChanged': 'Password changed successfully',
+      'passwordMismatch': 'Passwords do not match',
+      'passwordTooShort': 'Password must be at least 8 characters',
+      'profileUpdated': 'Profile updated successfully',
     },
     'ar': {
       'appTitle': 'تطبيق المتجر',
@@ -218,6 +242,18 @@ class AppLocalizations {
       'outOfStock': 'نفد المخزون',
       'cannotPurchaseOutOfStock': 'لا يمكن شراء هذا المنتج لأنه نفد من المخزون',
       'profile': 'الملف الشخصي',
+      'phone': 'الهاتف',
+      'address': 'العنوان',
+      'dateOfBirth': 'تاريخ الميلاد',
+      'country': 'الدولة',
+      'currentPassword': 'كلمة المرور الحالية',
+      'newPassword': 'كلمة المرور الجديدة',
+      'confirmPassword': 'تأكيد كلمة المرور',
+      'changePassword': 'تغيير كلمة المرور',
+      'passwordChanged': 'تم تغيير كلمة المرور بنجاح',
+      'passwordMismatch': 'كلمات المرور غير متطابقة',
+      'passwordTooShort': 'يجب أن تكون كلمة المرور 8 أحرف على الأقل',
+      'profileUpdated': 'تم تحديث الملف الشخصي بنجاح',
     },
   };
 }

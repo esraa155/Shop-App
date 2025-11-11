@@ -24,9 +24,20 @@ final class AuthRegisterSubmitted extends AuthEvent {
   final String name;
   final String email;
   final String password;
-  AuthRegisterSubmitted(this.name, this.email, this.password);
+  final String? phone;
+  final String? address;
+  final String? dateOfBirth;
+  final String? city;
+  final String? country;
+  AuthRegisterSubmitted(this.name, this.email, this.password, {
+    this.phone,
+    this.address,
+    this.dateOfBirth,
+    this.city,
+    this.country,
+  });
   @override
-  List<Object?> get props => [name, email, password];
+  List<Object?> get props => [name, email, password, phone, address, dateOfBirth, city, country];
 }
 
 sealed class AuthState extends Equatable {
@@ -86,7 +97,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(AuthLoading());
       try {
         await _repo.register(
-            name: event.name, email: event.email, password: event.password);
+            name: event.name,
+            email: event.email,
+            password: event.password,
+            phone: event.phone,
+            address: event.address,
+            dateOfBirth: event.dateOfBirth,
+            city: event.city,
+            country: event.country);
         emit(AuthAuthenticated());
       } catch (e) {
         String errorMessage = 'Register failed';

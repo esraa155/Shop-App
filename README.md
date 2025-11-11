@@ -1,81 +1,81 @@
-# Shop App - تطبيق المتجر الإلكتروني
+# Shop App - E-Commerce Application
 
-تطبيق متجر إلكتروني كامل مبني باستخدام **Flutter** (Frontend) و **Laravel** (Backend) مع دعم كامل للغة العربية والإنجليزية.
+A complete e-commerce application built with **Flutter** (Frontend) and **Laravel** (Backend) with full support for Arabic and English languages.
 
-## 📋 محتويات المشروع
+## 📋 Project Contents
 
 ### Frontend (Flutter)
-- تطبيق Flutter متعدد المنصات (Android, iOS, Web, Windows, macOS, Linux)
-- دعم كامل للغة العربية والإنجليزية مع RTL
-- استخدام BLoC Pattern لإدارة الحالة
-- واجهة مستخدم حديثة ومتجاوبة مع Material Design 3
-- عرض تفاصيل المنتجات في نفس الصفحة (Expandable)
-- التحقق من المخزون (Stock) قبل الشراء
-- Tooltips على جميع الأيقونات
+- Cross-platform Flutter application (Android, iOS, Web, Windows, macOS, Linux)
+- Full support for Arabic and English with RTL
+- BLoC Pattern for state management
+- Modern and responsive UI with Material Design 3
+- Expandable product details on the same page
+- Stock verification before purchase
+- Tooltips on all icons
 
 ### Backend (Laravel)
-- API RESTful باستخدام Laravel 12
-- نظام مصادقة باستخدام Sanctum
-- قاعدة بيانات SQLite/MySQL
-- نظام إدارة المنتجات والسلة والطلبات
-- ترتيب المنتجات أبجدياً
-- إدارة المخزون (Stock Management)
+- RESTful API using Laravel 12
+- Authentication system using Sanctum
+- SQLite/MySQL database
+- Product, cart, and order management system
+- Alphabetical product sorting
+- Stock management
 
-## 🚀 متطلبات التشغيل
+## 🚀 Requirements
 
 ### Frontend
 - **Flutter SDK** >= 3.3.4
 - **Dart SDK** >= 3.3.4
-- **Android Studio** / **VS Code** مع Flutter Extension
-- **Android SDK** (للتطوير على Android)
-- **Xcode** (للتطوير على iOS - macOS فقط)
+- **Android Studio** / **VS Code** with Flutter Extension
+- **Android SDK** (for Android development)
+- **Xcode** (for iOS development - macOS only)
 
 ### Backend
 - **PHP** >= 8.2
 - **Composer** (PHP Package Manager)
-- **MySQL** >= 8.0 أو **SQLite**
+- **MySQL** >= 8.0 or **SQLite**
 - **Laravel** >= 12.0
 - **XAMPP** / **Laravel Valet** / **Laravel Sail**
 
-## 📦 التثبيت والتشغيل
+## 📦 Installation and Setup
 
 ### 1️⃣ Backend (Laravel)
 
-#### الخطوة 1: الانتقال لمجلد Backend
+#### Step 1: Navigate to Backend Directory
 ```bash
 cd backend
 ```
 
-#### الخطوة 2: تثبيت Dependencies
+#### Step 2: Install Dependencies
 ```bash
 composer install
 ```
 
-#### الخطوة 3: إعداد ملف البيئة
+#### Step 3: Setup Environment File
 ```bash
-# نسخ ملف البيئة
+# Copy environment file
 cp .env.example .env
 
-# أو على Windows
+# Or on Windows
 copy .env.example .env
 ```
 
-#### الخطوة 4: إنشاء مفتاح التطبيق
+#### Step 4: Generate Application Key
 ```bash
 php artisan key:generate
 ```
 
-#### الخطوة 5: إعداد قاعدة البيانات
+#### Step 5: Configure Database
 
-افتح ملف `.env` وعدل إعدادات قاعدة البيانات:
+Open the `.env` file and modify database settings:
 
-**لـ SQLite (الأسهل للبداية):**
+**For SQLite (Easiest to start):**
 ```env
 DB_CONNECTION=sqlite
 DB_DATABASE=C:\xampp\htdocs\New folder\backend\database\database.sqlite
 ```
 
-**أو لـ MySQL:**
+**Or for MySQL:**
 ```env
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
@@ -85,109 +85,109 @@ DB_USERNAME=root
 DB_PASSWORD=
 ```
 
-#### الخطوة 6: تشغيل Migrations
+#### Step 6: Run Migrations
 ```bash
 php artisan migrate
 ```
 
-#### الخطوة 7: (اختياري) تشغيل Seeders لإضافة بيانات تجريبية
+#### Step 7: (Optional) Run Seeders to Add Sample Data
 ```bash
 php artisan db:seed
 ```
 
-أو لتحديث المنتجات فقط:
+Or to update products only:
 ```bash
 php artisan db:seed --class=ProductSeeder
 ```
 
-#### الخطوة 8: تشغيل السيرفر
+#### Step 8: Start the Server
 ```bash
 php artisan serve
 ```
 
-✅ الـ Backend سيعمل على: **http://localhost:8000**
+✅ The Backend will run on: **http://localhost:8000**
 
 ---
 
 ### 2️⃣ Frontend (Flutter)
 
-#### الخطوة 1: الانتقال لمجلد Frontend
+#### Step 1: Navigate to Frontend Directory
 ```bash
 cd frontend
 ```
 
-#### الخطوة 2: تثبيت Dependencies
+#### Step 2: Install Dependencies
 ```bash
 flutter pub get
 ```
 
-#### الخطوة 3: إعداد API URL
+#### Step 3: Configure API URL
 
-ملف `frontend/lib/core/api_client.dart` مُعد تلقائياً:
-- **للـ Android Emulator**: `http://10.0.2.2:8000`
-- **للـ iOS/Desktop**: `http://127.0.0.1:8000`
-- **للـ Web**: يستخدم نفس URL المتصفح
+The `frontend/lib/core/api_client.dart` file is automatically configured:
+- **For Android Emulator**: `http://10.0.2.2:8000`
+- **For iOS/Desktop**: `http://127.0.0.1:8000`
+- **For Web**: Uses the same browser URL
 
-**للأجهزة الحقيقية:**
-إذا كنت تريد تشغيل التطبيق على جهاز حقيقي، يمكنك تعديل `api_client.dart`:
+**For Real Devices:**
+If you want to run the app on a real device, you can modify `api_client.dart`:
 
 ```dart
-// في api_client.dart، استبدل:
+// In api_client.dart, replace:
 Platform.isAndroid
-    ? 'http://10.0.2.2:8000'  // للـ Emulator
+    ? 'http://10.0.2.2:8000'  // For Emulator
     : 'http://127.0.0.1:8000'
 
-// بـ:
+// With:
 Platform.isAndroid
-    ? 'http://YOUR_COMPUTER_IP:8000'  // للجهاز الحقيقي
+    ? 'http://YOUR_COMPUTER_IP:8000'  // For real device
     : 'http://YOUR_COMPUTER_IP:8000'
 ```
 
-**للحصول على IP جهازك:**
-- Windows: `ipconfig` في Command Prompt
-- Mac/Linux: `ifconfig` في Terminal
+**To get your computer's IP:**
+- Windows: `ipconfig` in Command Prompt
+- Mac/Linux: `ifconfig` in Terminal
 
-#### الخطوة 4: تشغيل التطبيق
+#### Step 4: Run the Application
 
-**لـ Android:**
+**For Android:**
 ```bash
 flutter run
 ```
 
-**لـ iOS (macOS فقط):**
+**For iOS (macOS only):**
 ```bash
 flutter run -d ios
 ```
 
-**لـ Web:**
+**For Web:**
 ```bash
 flutter run -d chrome
 ```
 
-**لـ Windows:**
+**For Windows:**
 ```bash
 flutter run -d windows
 ```
 
 ---
 
-## 🔧 إعدادات مهمة
+## 🔧 Important Settings
 
-### 1. إعداد CORS في Laravel
+### 1. CORS Configuration in Laravel
 
-افتح ملف `backend/config/cors.php` وتأكد من:
+Open `backend/config/cors.php` and ensure:
 
 ```php
 'paths' => ['api/*', 'sanctum/csrf-cookie'],
-'allowed_origins' => ['*'], // أو حدد المنافذ المحددة
+'allowed_origins' => ['*'], // Or specify specific ports
 'allowed_methods' => ['*'],
 'allowed_headers' => ['*'],
 'supports_credentials' => true,
 ```
 
-### 2. إعداد Session في Laravel
+### 2. Session Configuration in Laravel
 
-افتح ملف `backend/config/session.php` وتأكد من:
+Open `backend/config/session.php` and ensure:
 
 ```php
 'driver' => env('SESSION_DRIVER', 'file'),
@@ -196,122 +196,143 @@ flutter run -d windows
 
 ---
 
-## 📱 الميزات
+## 📱 Features
 
-### ✅ الميزات المطبقة
+### ✅ Implemented Features
 
-1. **نظام المصادقة**
-   - ✅ تسجيل مستخدم جديد
-   - ✅ تسجيل دخول
-   - ✅ تسجيل خروج
-   - ✅ حفظ جلسة المستخدم
-   - ✅ رسائل خطأ واضحة ومفصلة
+1. **Authentication System**
+   - ✅ User registration with extended profile fields
+   - ✅ User login
+   - ✅ User logout
+   - ✅ User session persistence
+   - ✅ Clear and detailed error messages
 
-2. **إدارة المنتجات**
-   - ✅ عرض قائمة المنتجات مرتبة أبجدياً
-   - ✅ عرض تفاصيل المنتج في نفس الصفحة (Expandable)
-   - ✅ إضافة/إزالة من المفضلة
-   - ✅ عرض الفئة (Category)
-   - ✅ عرض الوصف (Description)
-   - ✅ عرض المواصفات (Specifications)
-   - ✅ عرض المخزون (Stock)
+2. **User Registration**
+   - ✅ Name (required)
+   - ✅ Email (required)
+   - ✅ Password with confirmation (required, min 8 characters)
+   - ✅ Phone number (optional)
+   - ✅ Address (optional)
+   - ✅ Date of birth (optional)
+   - ✅ City (optional)
+   - ✅ Country (optional)
 
-3. **إدارة المخزون**
-   - ✅ التحقق من المخزون قبل الشراء
-   - ✅ منع الشراء إذا كان المخزون = 0
-   - ✅ عرض رسالة "نفد المخزون" للمنتجات غير المتوفرة
-   - ✅ تحديد الكمية القصوى بناءً على المخزون
+3. **User Profile Management**
+   - ✅ View complete profile information
+   - ✅ Edit profile information (name, email, phone, address, date of birth, city, country)
+   - ✅ Upload/change profile avatar image
+   - ✅ Change password functionality
+   - ✅ View account creation date
 
-4. **السلة (Cart)**
-   - ✅ إضافة منتجات للسلة
-   - ✅ اختيار الكمية (مع التحقق من المخزون)
-   - ✅ تحديث الكمية تلقائياً
-   - ✅ عرض عدد المنتجات في أيقونة السلة
-   - ✅ حذف منتجات من السلة
-   - ✅ عرض المجموع الفرعي
+4. **Product Management**
+   - ✅ Display product list sorted alphabetically
+   - ✅ Expandable product details on the same page
+   - ✅ Add/remove from favorites
+   - ✅ Display category
+   - ✅ Display description
+   - ✅ Display specifications
+   - ✅ Display stock availability
 
-5. **الدفع (Payment)**
-   - ✅ نموذج دفع كامل مع validation
-   - ✅ معلومات الشحن (الاسم، الهاتف، العنوان)
-   - ✅ طرق الدفع (نقد عند الاستلام / بطاقة)
-   - ✅ تفاصيل البطاقة:
-     - رقم البطاقة (16 رقم فقط)
-     - تاريخ الانتهاء (اختيار الشهر ثم السنة)
-     - CVV (3 أرقام)
-     - اسم حامل البطاقة
-   - ✅ ملخص الطلب
+5. **Stock Management**
+   - ✅ Verify stock before purchase
+   - ✅ Prevent purchase if stock = 0
+   - ✅ Display "Out of Stock" message for unavailable products
+   - ✅ Set maximum quantity based on stock
 
-6. **الترجمة (Localization)**
-   - ✅ دعم كامل للغة العربية والإنجليزية
-   - ✅ تغيير اللغة من أيقونة في HomeScreen
-   - ✅ اللغة الافتراضية: الإنجليزية
-   - ✅ جميع النصوص مترجمة بالكامل
-   - ✅ حفظ اللغة المختارة
+6. **Shopping Cart**
+   - ✅ Add products to cart
+   - ✅ Select quantity (with stock verification)
+   - ✅ Automatic quantity updates
+   - ✅ Display product count in cart icon
+   - ✅ Remove products from cart
+   - ✅ Display subtotal
 
-7. **واجهة المستخدم**
-   - ✅ Tooltips على جميع الأيقونات
-   - ✅ تصميم Material Design 3
-   - ✅ دعم الوضع الداكن
-   - ✅ تجربة مستخدم سلسة
-   - ✅ إخفاء Loading Indicator عند التنقل بين الصفحات
+7. **Payment System**
+   - ✅ Complete payment form with validation
+   - ✅ Shipping information (name, phone, address)
+   - ✅ Payment methods (Cash on Delivery / Card)
+   - ✅ Card details:
+     - Card number (16 digits only)
+     - Expiry date (select month then year)
+     - CVV (3 digits)
+     - Card holder name
+   - ✅ Order summary
+
+8. **Localization**
+   - ✅ Full support for Arabic and English languages
+   - ✅ Change language from icon in HomeScreen
+   - ✅ Default language: English
+   - ✅ All texts fully translated
+   - ✅ Save selected language
+
+9. **User Interface**
+   - ✅ Tooltips on all icons
+   - ✅ Material Design 3
+   - ✅ Dark mode support
+   - ✅ Smooth user experience
+   - ✅ Hide loading indicator when navigating between pages
 
 ---
 
-## 📁 هيكل المشروع
+## 📁 Project Structure
 
 ```
 project/
-├── frontend/                 # تطبيق Flutter
+├── frontend/                 # Flutter Application
 │   ├── lib/
 │   │   ├── core/            # API Client, Secure Storage
 │   │   │   ├── api_client.dart
 │   │   │   └── secure_storage.dart
-│   │   ├── features/        # Auth, Products, Cart
+│   │   ├── features/        # Auth, Products, Cart, Profile
 │   │   │   ├── auth/
 │   │   │   │   ├── bloc/    # AuthBloc, AuthState, AuthEvent
 │   │   │   │   └── data/    # AuthRepository
 │   │   │   ├── products/
 │   │   │   │   ├── bloc/    # ProductsBloc, ProductsState, ProductsEvent
 │   │   │   │   └── data/    # ProductRepository, Product Model
-│   │   │   └── cart/
-│   │   │       ├── bloc/    # CartBloc, CartState, CartEvent
-│   │   │       └── data/    # CartRepository, CartItem Model
-│   │   ├── l10n/            # ملفات الترجمة
+│   │   │   ├── cart/
+│   │   │   │   ├── bloc/    # CartBloc, CartState, CartEvent
+│   │   │   │   └── data/    # CartRepository, CartItem Model
+│   │   │   └── profile/
+│   │   │       └── data/    # ProfileRepository, UserProfile Model
+│   │   ├── l10n/            # Translation files
 │   │   │   └── app_localizations.dart
-│   │   ├── screens/         # الشاشات
+│   │   ├── screens/         # Screens
 │   │   │   ├── auth/
 │   │   │   │   └── login_register_screen.dart
 │   │   │   ├── splash_screen.dart
 │   │   │   ├── home_screen.dart
 │   │   │   ├── cart_screen.dart
 │   │   │   ├── favorites_screen.dart
-│   │   │   └── payment_screen.dart
-│   │   ├── widgets/         # Widgets قابلة لإعادة الاستخدام
+│   │   │   ├── payment_screen.dart
+│   │   │   └── profile_screen.dart
+│   │   ├── widgets/         # Reusable Widgets
 │   │   │   ├── cart_icon_with_badge.dart
 │   │   │   ├── expandable_product_tile.dart
 │   │   │   └── quantity_picker.dart
 │   │   ├── utils/           # Utilities
 │   │   │   └── locale_storage.dart
-│   │   └── main.dart        # نقطة البداية
+│   │   └── main.dart        # Entry point
 │   ├── pubspec.yaml         # Dependencies
 │   └── README.md
 │
 └── backend/                  # Laravel API
     ├── app/
     │   ├── Http/
-    │   │   ├── Controllers/ # AuthController, ProductController, CartController
+    │   │   ├── Controllers/ # AuthController, ProductController, CartController, ProfileController
     │   │   ├── Requests/    # Form Validation
-    │   │   └── Resources/   # API Resources (ProductResource)
+    │   │   └── Resources/   # API Resources (UserResource, ProductResource)
     │   └── Models/          # User, Product, CartItem, Order, OrderItem, Favorite
     ├── database/
     │   ├── migrations/      # Database Migrations
     │   │   ├── create_users_table.php
+    │   │   ├── add_avatar_to_users_table.php
+    │   │   ├── add_additional_fields_to_users_table.php
     │   │   ├── create_products_table.php
     │   │   ├── create_orders_table.php
     │   │   ├── create_order_items_table.php
     │   │   ├── create_cart_items_table.php
-    │   │   ├── create_favorites_table.php
-    │   │   └── add_details_to_products_table.php
+    │   │   └── create_favorites_table.php
     │   └── seeders/         # Database Seeders
     │       ├── DatabaseSeeder.php
     │       ├── UserSeeder.php
@@ -328,16 +349,22 @@ project/
 ## 🔑 API Endpoints
 
 ### Authentication
-- `POST /api/register` - تسجيل مستخدم جديد
+- `POST /api/register` - Register a new user
   ```json
   {
     "name": "John Doe",
     "email": "john@example.com",
-    "password": "password123"
+    "password": "password123",
+    "password_confirmation": "password123",
+    "phone": "+1234567890",
+    "address": "123 Main St",
+    "date_of_birth": "1990-01-01",
+    "city": "New York",
+    "country": "USA"
   }
   ```
 
-- `POST /api/login` - تسجيل دخول
+- `POST /api/login` - Login
   ```json
   {
     "email": "john@example.com",
@@ -345,20 +372,44 @@ project/
   }
   ```
 
-- `POST /api/logout` - تسجيل خروج (يتطلب authentication)
+- `POST /api/logout` - Logout (requires authentication)
+
+### Profile
+- `GET /api/profile` - Get user profile (requires authentication)
+- `PUT /api/profile` - Update user profile (requires authentication)
+  ```json
+  {
+    "name": "John Doe",
+    "email": "john@example.com",
+    "phone": "+1234567890",
+    "address": "123 Main St",
+    "date_of_birth": "1990-01-01",
+    "city": "New York",
+    "country": "USA",
+    "avatar": "data:image/jpeg;base64,..."
+  }
+  ```
+- `POST /api/profile/change-password` - Change password (requires authentication)
+  ```json
+  {
+    "current_password": "oldpassword123",
+    "password": "newpassword123",
+    "password_confirmation": "newpassword123"
+  }
+  ```
 
 ### Products
-- `GET /api/products` - قائمة المنتجات (مرتبة أبجدياً)
+- `GET /api/products` - Product list (sorted alphabetically)
   - Query Parameters: `page`, `per_page`
 
-- `GET /api/favorites` - قائمة المفضلة (يتطلب authentication)
+- `GET /api/favorites` - Favorites list (requires authentication)
 
-- `POST /api/favorites/toggle/{id}` - إضافة/إزالة من المفضلة (يتطلب authentication)
+- `POST /api/favorites/toggle/{id}` - Add/remove from favorites (requires authentication)
 
 ### Cart
-- `GET /api/cart` - عرض السلة (يتطلب authentication)
+- `GET /api/cart` - View cart (requires authentication)
 
-- `POST /api/cart/add` - إضافة منتج للسلة (يتطلب authentication)
+- `POST /api/cart/add` - Add product to cart (requires authentication)
   ```json
   {
     "product_id": 1,
@@ -366,16 +417,16 @@ project/
   }
   ```
 
-- `DELETE /api/cart/remove/{id}` - حذف منتج من السلة (يتطلب authentication)
+- `DELETE /api/cart/remove/{id}` - Remove product from cart (requires authentication)
 
-- `PATCH /api/cart/update/{id}` - تحديث الكمية (يتطلب authentication)
+- `PATCH /api/cart/update/{id}` - Update quantity (requires authentication)
   ```json
   {
     "quantity": 5
   }
   ```
 
-- `POST /api/checkout` - إتمام الطلب (يتطلب authentication)
+- `POST /api/checkout` - Complete order (requires authentication)
   ```json
   {
     "full_name": "John Doe",
@@ -393,86 +444,89 @@ project/
 
 ---
 
-## 🛠️ التقنيات المستخدمة
+## 🛠️ Technologies Used
 
 ### Frontend
-- **Flutter** 3.3.4+ - Framework التطوير
-- **flutter_bloc** 8.1.6 - إدارة الحالة
+- **Flutter** 3.3.4+ - Development Framework
+- **flutter_bloc** 8.1.6 - State Management
 - **dio** 5.9.0 - HTTP Client
-- **flutter_secure_storage** 9.2.4 - تخزين آمن للـ tokens
-- **equatable** 2.0.7 - مقارنة الكائنات
-- **flutter_localizations** - دعم الترجمة
+- **flutter_secure_storage** 9.2.4 - Secure token storage
+- **equatable** 2.0.7 - Object comparison
+- **flutter_localizations** - Translation support
+- **image_picker** - Image selection for profile avatar
 
 ### Backend
 - **Laravel** 12.0 - PHP Framework
 - **Sanctum** 4.2 - API Authentication
-- **MySQL/SQLite** - قاعدة البيانات
+- **MySQL/SQLite** - Database
 
 ---
 
-## 📝 ملاحظات مهمة
+## 📝 Important Notes
 
-1. **اللغة الافتراضية**: الإنجليزية
-2. **الصفحة الأولى**: صفحة التسجيل (Register)
-3. **بعد التسجيل**: يتم الانتقال تلقائياً لصفحة تسجيل الدخول
-4. **تحديث السلة**: يتم تحديث عدد المنتجات في أيقونة السلة فوراً عند الإضافة
-5. **الكمية**: عند إضافة منتج موجود في السلة، يتم إضافة الكمية الجديدة للكمية الموجودة
-6. **المخزون**: يتم التحقق من المخزون قبل الشراء، ولا يمكن شراء منتج إذا كان المخزون = 0
-7. **ترتيب المنتجات**: المنتجات مرتبة أبجدياً حسب الاسم
-8. **تفاصيل المنتج**: يمكن عرض تفاصيل المنتج في نفس الصفحة بدون الانتقال لصفحة أخرى
+1. **Default Language**: English
+2. **First Page**: Registration page (Register)
+3. **After Registration**: Automatically navigates to login page
+4. **Cart Updates**: Product count in cart icon updates immediately upon addition
+5. **Quantity**: When adding an existing product to cart, new quantity is added to existing quantity
+6. **Stock**: Stock is verified before purchase, and products with stock = 0 cannot be purchased
+7. **Product Sorting**: Products are sorted alphabetically by name
+8. **Product Details**: Product details can be displayed on the same page without navigating to another page
+9. **Profile Fields**: All profile fields (phone, address, date of birth, city, country) are optional during registration and can be updated later in the profile screen
+10. **Password Change**: Users can change their password from the profile screen by providing current password and new password
 
 ---
 
-## 🐛 حل المشاكل الشائعة
+## 🐛 Troubleshooting
 
-### مشكلة CORS
-إذا واجهت مشكلة CORS، تأكد من:
-1. إعداد `cors.php` بشكل صحيح
-2. إضافة `HandleCors` middleware في `bootstrap/app.php`
-3. التأكد من أن `allowed_origins` يحتوي على `*` أو المنفذ الصحيح
+### CORS Issue
+If you encounter a CORS issue, ensure:
+1. `cors.php` is configured correctly
+2. `HandleCors` middleware is added in `bootstrap/app.php`
+3. `allowed_origins` contains `*` or the correct port
 
-### مشكلة الاتصال بالـ API
-- ✅ تأكد من أن الـ Backend يعمل على `http://localhost:8000`
-- ✅ تحقق من `BASE_URL` في `api_client.dart`
-- ✅ للأجهزة الحقيقية، استخدم IP جهازك بدلاً من `localhost`
-  - للعثور على IP: `ipconfig` (Windows) أو `ifconfig` (Mac/Linux)
-- ✅ تأكد من أن الجهاز والكمبيوتر على نفس الشبكة
+### API Connection Issue
+- ✅ Ensure Backend is running on `http://localhost:8000`
+- ✅ Check `BASE_URL` in `api_client.dart`
+- ✅ For real devices, use your computer's IP instead of `localhost`
+  - To find IP: `ipconfig` (Windows) or `ifconfig` (Mac/Linux)
+- ✅ Ensure device and computer are on the same network
 
-### مشكلة اللغة
-- اللغة الافتراضية هي الإنجليزية
-- يمكن تغيير اللغة من أيقونة اللغة في HomeScreen
-- اللغة المحفوظة يتم تحميلها تلقائياً عند فتح التطبيق
+### Language Issue
+- Default language is English
+- Language can be changed from the language icon in HomeScreen
+- Saved language is loaded automatically when opening the app
 
-### مشكلة Stock = 0
-- إذا كان Stock = 0، لا يمكن شراء المنتج
-- يتم تعطيل أزرار الشراء تلقائياً
-- تظهر رسالة "نفد المخزون"
+### Stock = 0 Issue
+- If Stock = 0, product cannot be purchased
+- Purchase buttons are automatically disabled
+- "Out of Stock" message is displayed
 
-### مشكلة Migration
-إذا واجهت مشكلة في Migration:
+### Migration Issue
+If you encounter a migration issue:
 ```bash
-# حذف جميع الجداول وإعادة إنشائها
+# Delete all tables and recreate them
 php artisan migrate:fresh
 
-# ثم تشغيل Seeders
+# Then run Seeders
 php artisan db:seed
 ```
 
-### مشكلة Flutter Dependencies
+### Flutter Dependencies Issue
 ```bash
-# تنظيف المشروع
+# Clean the project
 flutter clean
 
-# إعادة تثبيت Dependencies
+# Reinstall Dependencies
 flutter pub get
 
-# إعادة تشغيل
+# Restart
 flutter run
 ```
 
 ---
 
-## 🎯 خطوات التشغيل السريع
+## 🎯 Quick Start Steps
 
 ### Backend
 ```bash
@@ -489,44 +543,44 @@ php artisan serve
 ```bash
 cd frontend
 flutter pub get
-# تحديث BASE_URL في api_client.dart
+# Update BASE_URL in api_client.dart if needed
 flutter run
 ```
 
 ---
 
-## 📊 قاعدة البيانات
+## 📊 Database
 
-### الجداول الرئيسية:
-- **users** - المستخدمون
-- **products** - المنتجات (name, category, description, specifications, price, stock, image_url)
-- **cart_items** - عناصر السلة
-- **orders** - الطلبات
-- **order_items** - عناصر الطلبات
-- **favorites** - المفضلة
-
----
-
-## 👥 المساهمة
-
-هذا مشروع تعليمي. يمكنك استخدامه كقاعدة لمشاريعك الخاصة.
+### Main Tables:
+- **users** - Users (name, email, password, avatar, phone, address, date_of_birth, city, country)
+- **products** - Products (name, category, description, specifications, price, stock, image_url)
+- **cart_items** - Cart items
+- **orders** - Orders
+- **order_items** - Order items
+- **favorites** - Favorites
 
 ---
 
-## 📄 الترخيص
+## 👥 Contributing
 
-هذا المشروع مفتوح المصدر ومتاح للاستخدام الحر.
-
----
-
-## 📞 الدعم
-
-إذا واجهت أي مشاكل أو لديك أسئلة، يمكنك:
-1. فتح Issue في المشروع
-2. مراجعة قسم "حل المشاكل الشائعة" أعلاه
+This is an educational project. You can use it as a base for your own projects.
 
 ---
 
-**تم التطوير بواسطة:** [Your Name]  
-**التاريخ:** 2024  
-**الإصدار:** 1.0.0
+## 📄 License
+
+This project is open source and available for free use.
+
+---
+
+## 📞 Support
+
+If you encounter any issues or have questions, you can:
+1. Open an Issue in the project
+2. Review the "Troubleshooting" section above
+
+---
+
+**Developed by:** [Your Name]  
+**Date:** 2024  
+**Version:** 1.0.0

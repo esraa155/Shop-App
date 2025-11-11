@@ -26,7 +26,14 @@ class _LoginRegisterScreenState extends State<LoginRegisterScreen> {
   String _name = '';
   String _email = '';
   String _password = '';
+  String _passwordConfirmation = '';
+  String _phone = '';
+  String _address = '';
+  String? _dateOfBirth;
+  String _city = '';
+  String _country = '';
   bool _showPassword = false;
+  bool _showPasswordConfirmation = false;
 
   @override
   Widget build(BuildContext context) {
@@ -56,19 +63,68 @@ class _LoginRegisterScreenState extends State<LoginRegisterScreen> {
               key: _formKey,
               child: Column(
                 children: [
-                  if (!_isLogin)
+                  if (!_isLogin) ...[
                     TextFormField(
                       decoration: InputDecoration(labelText: l10n.name),
                       onChanged: (v) => _name = v,
                       validator: (v) =>
                           (v == null || v.isEmpty) ? l10n.required : null,
                     ),
+                    const SizedBox(height: 8),
+                    TextFormField(
+                      decoration: InputDecoration(labelText: l10n.phone),
+                      keyboardType: TextInputType.phone,
+                      onChanged: (v) => _phone = v,
+                    ),
+                    const SizedBox(height: 8),
+                    TextFormField(
+                      decoration: InputDecoration(labelText: l10n.address),
+                      maxLines: 2,
+                      onChanged: (v) => _address = v,
+                    ),
+                    const SizedBox(height: 8),
+                    TextFormField(
+                      decoration: InputDecoration(labelText: l10n.dateOfBirth),
+                      readOnly: true,
+                      onTap: () async {
+                        final date = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now().subtract(const Duration(days: 365 * 18)),
+                          firstDate: DateTime(1900),
+                          lastDate: DateTime.now(),
+                        );
+                        if (date != null) {
+                          setState(() {
+                            _dateOfBirth = date.toIso8601String().split('T')[0];
+                          });
+                        }
+                      },
+                      controller: TextEditingController(
+                        text: _dateOfBirth != null
+                            ? DateTime.parse(_dateOfBirth!).toString().split(' ')[0]
+                            : '',
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    TextFormField(
+                      decoration: InputDecoration(labelText: l10n.city),
+                      onChanged: (v) => _city = v,
+                    ),
+                    const SizedBox(height: 8),
+                    TextFormField(
+                      decoration: InputDecoration(labelText: l10n.country),
+                      onChanged: (v) => _country = v,
+                    ),
+                    const SizedBox(height: 8),
+                  ],
                   TextFormField(
                     decoration: InputDecoration(labelText: l10n.email),
+                    keyboardType: TextInputType.emailAddress,
                     onChanged: (v) => _email = v,
                     validator: (v) =>
                         (v == null || v.isEmpty) ? l10n.required : null,
                   ),
+                  const SizedBox(height: 8),
                   TextFormField(
                     decoration: InputDecoration(
                       labelText: l10n.password,
@@ -86,8 +142,31 @@ class _LoginRegisterScreenState extends State<LoginRegisterScreen> {
                     obscureText: !_showPassword,
                     onChanged: (v) => _password = v,
                     validator: (v) =>
-                        (v == null || v.length < 6) ? l10n.minChars : null,
+                        (v == null || v.length < 8) ? l10n.passwordTooShort : null,
                   ),
+                  if (!_isLogin) ...[
+                    const SizedBox(height: 8),
+                    TextFormField(
+                      decoration: InputDecoration(
+                        labelText: l10n.confirmPassword,
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _showPasswordConfirmation
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                          ),
+                          onPressed: () => setState(() {
+                            _showPasswordConfirmation = !_showPasswordConfirmation;
+                          }),
+                        ),
+                      ),
+                      obscureText: !_showPasswordConfirmation,
+                      onChanged: (v) => _passwordConfirmation = v,
+                      validator: (v) => (v == null || v != _password)
+                          ? l10n.passwordMismatch
+                          : null,
+                    ),
+                  ],
                   const SizedBox(height: 16),
                   Row(
                     children: [
@@ -105,7 +184,13 @@ class _LoginRegisterScreenState extends State<LoginRegisterScreen> {
                                   } else {
                                     context.read<AuthBloc>().add(
                                         AuthRegisterSubmitted(
-                                            _name, _email, _password));
+                                            _name, _email, _password,
+                                            phone: _phone.isEmpty ? null : _phone,
+                                            address: _address.isEmpty ? null : _address,
+                                            dateOfBirth: _dateOfBirth,
+                                            city: _city.isEmpty ? null : _city,
+                                            country: _country.isEmpty ? null : _country,
+                                        ));
                                   }
                                 },
                           child: Text(loading

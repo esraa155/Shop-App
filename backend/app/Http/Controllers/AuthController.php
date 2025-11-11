@@ -19,6 +19,11 @@ class AuthController extends Controller
 			'name' => $data['name'],
 			'email' => $data['email'],
 			'password' => $data['password'],
+			'phone' => $data['phone'] ?? null,
+			'address' => $data['address'] ?? null,
+			'date_of_birth' => $data['date_of_birth'] ?? null,
+			'city' => $data['city'] ?? null,
+			'country' => $data['country'] ?? null,
 		]);
 		$token = $user->createToken('mobile')->plainTextToken;
 		return response()->json([
