@@ -198,6 +198,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       });
 
       if (mounted) {
+        final l10n = AppLocalizations.of(context)!;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(l10n.profileUpdated)),
         );
@@ -214,6 +215,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   /// Change user password
   Future<void> _changePassword() async {
+    final l10n = AppLocalizations.of(context)!;
+    
     if (_newPasswordController.text != _confirmPasswordController.text) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(l10n.passwordMismatch)),
