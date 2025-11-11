@@ -62,8 +62,13 @@ class CartController extends Controller
 				$item->quantity = ($item->exists ? $item->quantity : 0) + $data['quantity'];
 				$item->save();
 
-				// Decrease product stock and refresh
-				$product->decrement('stock', $requestedQuantity);
+				// Decrease product stock directly using DB query to ensure it works
+				$newStock = $product->stock - $requestedQuantity;
+				DB::table('products')
+					->where('id', $product->id)
+					->update(['stock' => $newStock]);
+				
+				// Refresh product to get updated stock
 				$product->refresh();
 
 				return $item->load('product');
@@ -98,7 +103,10 @@ class CartController extends Controller
 			// Restore product stock with lock
 			$product = Product::where('id', $productId)->lockForUpdate()->first();
 			if ($product) {
-				$product->increment('stock', $quantity);
+				$newStock = $product->stock + $quantity;
+				DB::table('products')
+					->where('id', $productId)
+					->update(['stock' => $newStock]);
 				$product->refresh();
 			}
 		});
@@ -124,7 +132,10 @@ class CartController extends Controller
 				// Restore product stock with lock
 				$product = Product::where('id', $productId)->lockForUpdate()->first();
 				if ($product) {
-					$product->increment('stock', $oldQuantity);
+					$newStock = $product->stock + $oldQuantity;
+					DB::table('products')
+						->where('id', $productId)
+						->update(['stock' => $newStock]);
 					$product->refresh();
 				}
 			});
@@ -149,13 +160,19 @@ class CartController extends Controller
 				$item->quantity = $newQuantity;
 				$item->save();
 
-				// Update product stock
+				// Update product stock directly using DB query
 				if ($quantityDifference > 0) {
 					// Decrease stock
-					$product->decrement('stock', $quantityDifference);
+					$newStock = $product->stock - $quantityDifference;
+					DB::table('products')
+						->where('id', $productId)
+						->update(['stock' => $newStock]);
 				} else {
 					// Increase stock (restore)
-					$product->increment('stock', abs($quantityDifference));
+					$newStock = $product->stock + abs($quantityDifference);
+					DB::table('products')
+						->where('id', $productId)
+						->update(['stock' => $newStock]);
 				}
 				$product->refresh();
 			});
