@@ -29,7 +29,7 @@ class ProfileController extends Controller
 		$validated = $request->validate([
 			'name' => 'sometimes|string|max:255',
 			'email' => 'sometimes|email|unique:users,email,' . $user->id,
-			'avatar' => 'sometimes|string|max:500', // URL or base64
+			'avatar' => 'sometimes|nullable|string', // Base64 image can be large
 			'phone' => 'sometimes|nullable|string|max:20',
 			'address' => 'sometimes|nullable|string|max:500',
 			'date_of_birth' => 'sometimes|nullable|date|before:today',
