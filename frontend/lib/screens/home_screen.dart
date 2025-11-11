@@ -25,9 +25,10 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    // Load cart items when screen is opened to update badge count
+    // Load products and cart items when screen is opened
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
+        context.read<ProductsBloc>().add(ProductsRequested());
         context.read<CartBloc>().add(CartRequested());
       }
     });

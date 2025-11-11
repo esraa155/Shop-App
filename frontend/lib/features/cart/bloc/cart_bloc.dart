@@ -87,13 +87,16 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         final currentState = state;
         int? productId;
         int? quantity;
-        if (currentState is CartLoaded) {
-          final item = currentState.items.firstWhere(
-            (item) => item.id == event.cartItemId,
-            orElse: () => currentState.items.first,
-          );
-          productId = item.product?.id;
-          quantity = item.quantity;
+        if (currentState is CartLoaded && currentState.items.isNotEmpty) {
+          try {
+            final item = currentState.items.firstWhere(
+              (item) => item.id == event.cartItemId,
+            );
+            productId = item.product?.id;
+            quantity = item.quantity;
+          } catch (_) {
+            // Item not found, continue with removal
+          }
         }
         
         await _repo.removeFromCart(cartItemId: event.cartItemId);
@@ -101,14 +104,17 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         // Update product stock in ProductsBloc if available
         if (_productsBloc != null && productId != null && quantity != null) {
           // Get current product stock and add back the quantity
-          final currentState = _productsBloc!.state;
-          if (currentState is ProductsLoaded) {
-            final product = currentState.products.firstWhere(
-              (p) => p.id == productId,
-              orElse: () => currentState.products.first,
-            );
-            final newStock = product.stock + quantity;
-            _productsBloc!.add(ProductStockUpdated(productId, newStock));
+          final productsState = _productsBloc!.state;
+          if (productsState is ProductsLoaded) {
+            try {
+              final product = productsState.products.firstWhere(
+                (p) => p.id == productId,
+              );
+              final newStock = product.stock + quantity;
+              _productsBloc!.add(ProductStockUpdated(productId, newStock));
+            } catch (_) {
+              // Product not found, skip stock update
+            }
           }
         }
         
@@ -131,13 +137,16 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         final currentState = state;
         int? productId;
         int? oldQuantity;
-        if (currentState is CartLoaded) {
-          final item = currentState.items.firstWhere(
-            (item) => item.id == event.cartItemId,
-            orElse: () => currentState.items.first,
-          );
-          productId = item.product?.id;
-          oldQuantity = item.quantity;
+        if (currentState is CartLoaded && currentState.items.isNotEmpty) {
+          try {
+            final item = currentState.items.firstWhere(
+              (item) => item.id == event.cartItemId,
+            );
+            productId = item.product?.id;
+            oldQuantity = item.quantity;
+          } catch (_) {
+            // Item not found, continue with update
+          }
         }
         
         await _repo.updateQuantity(
@@ -146,14 +155,17 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         // Update product stock in ProductsBloc if available
         if (_productsBloc != null && productId != null && oldQuantity != null) {
           final quantityDifference = event.quantity - oldQuantity;
-          final currentState = _productsBloc!.state;
-          if (currentState is ProductsLoaded) {
-            final product = currentState.products.firstWhere(
-              (p) => p.id == productId,
-              orElse: () => currentState.products.first,
-            );
-            final newStock = product.stock - quantityDifference;
-            _productsBloc!.add(ProductStockUpdated(productId, newStock));
+          final productsState = _productsBloc!.state;
+          if (productsState is ProductsLoaded) {
+            try {
+              final product = productsState.products.firstWhere(
+                (p) => p.id == productId,
+              );
+              final newStock = product.stock - quantityDifference;
+              _productsBloc!.add(ProductStockUpdated(productId, newStock));
+            } catch (_) {
+              // Product not found, skip stock update
+            }
           }
         }
         

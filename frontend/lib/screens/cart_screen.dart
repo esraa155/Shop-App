@@ -6,17 +6,31 @@ import 'payment_screen.dart';
 
 /// Cart screen displaying user's shopping cart items
 /// Features: View items, update quantities, remove items, checkout
-class CartScreen extends StatelessWidget {
+class CartScreen extends StatefulWidget {
   const CartScreen({super.key});
+
+  @override
+  State<CartScreen> createState() => _CartScreenState();
+}
+
+class _CartScreenState extends State<CartScreen> {
+  @override
+  void initState() {
+    super.initState();
+    // Load cart items when screen is opened
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        context.read<CartBloc>().add(CartRequested());
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(title: Text(l10n.cart)),
-      body: BlocProvider.value(
-        value: context.read<CartBloc>()..add(CartRequested()),
-        child: BlocConsumer<CartBloc, CartState>(
+      body: BlocConsumer<CartBloc, CartState>(
           listener: (context, state) {
             // Show error messages if cart operations fail
             if (state is CartError) {
